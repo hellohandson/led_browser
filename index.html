@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arduino connectivity test</title>
+
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+
+  </head>
+  <body>
+    <style>
+
+    #ledSet{
+    width:100px;
+    height:100%;
+
+    }
+    </style>
+
+    
+     
+     <center> <div id="ledSet"><h1>LIGHT UP!</h1></div></center>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+      $('#ledSet').on('mousedown',function(){
+        $('body').css({backgroundColor:"yellow"});
+        socket.emit('active',{status: true});
+      });
+      $('#ledSet').on('mouseup',function(){
+        $('body').css({backgroundColor:"black"});
+        socket.emit('active',{status:false});
+      });
+
+      var socket = io.connect('http://localhost');
+
+      socket.on('news', function (data) {
+        console.log(data);
+      });
+
+      socket.on('sensor', function (data) {
+        console.log("Incoming sensor data:",data.raw);
+        $("#inData").append(data.raw+"\r");
+        $("#inData").animate({scrollTop:$("#inData")[0].scrollHeight - $("#inData").height()},200);
+
+      });
+
+
+
+
+    </script>
+    </body>
+</html>
